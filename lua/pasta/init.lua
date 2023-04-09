@@ -87,6 +87,7 @@ function pasta.start(after)
       if char == pasta.config:get().prev_key and index > 1 then
         index = index - 1
         entry = entries[index]
+
         savepoint()
         pasta.paste(entry, after, context)
       elseif char == pasta.config:get().next_key and index < #entries then
@@ -196,10 +197,7 @@ function pasta.context(savepoint, entry)
   local curr_indent = string.match(vim.api.nvim_get_current_line(), '^%s+') or ''
   local first_line
   for _, line in ipairs(entry.regcontents) do
-    if line ~= '' then
       first_line = line
-      break
-    end
   end
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>o', true, true, true) .. first_line:gsub('^%s+', ''), 'nx', true)
   local next_indent = string.rep(' ', vim.api.nvim_eval(vim.bo.indentexpr))
